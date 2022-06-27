@@ -1,0 +1,46 @@
+---
+title: "Week4 Project Part2"
+author: "Melody Zhang"
+date: '2022-06-27'
+output: pdf_document
+---
+
+## Part2: Basic Inferential Data Analysis Instructions
+
+### 1. Load the ToothGrowth data and perform some basic exploratory data analyses.
+```{r load data}
+data("ToothGrowth")
+library(ggplot2)
+```
+
+### 2.Provide a basic summary of the data.
+```{r summary}
+summary(ToothGrowth)
+dim(ToothGrowth)
+head(ToothGrowth)
+str(ToothGrowth)
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+```
+
+### 3.Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose. (Only use the techniques from class, even if there's other approaches worth considering)
+
+Firstly, analyse the relationship between tooth length and supplementary methods.
+```{r supp}
+ggplot(ToothGrowth, aes(x=dose,y=len)) +     
+  geom_boxplot(aes(fill=dose)) +
+  facet_grid(~ supp)
+```
+
+Secondly, analyze the relationship between tooth length and drug dose.
+```{r dose}
+ggplot(ToothGrowth, aes(x=supp,y=len)) +     
+  geom_boxplot(aes(fill=supp)) +
+  facet_grid(~ dose)
+```
+
+Thirdly, use t.test() to check the confidence interval.
+```{r confidence interval}
+t.test(len~supp,data = ToothGrowth)
+t.test(len~dose,data = subset(ToothGrowth,dose == 0.5|dose == 1))
+t.test(len~dose,data = subset(ToothGrowth,dose == 1|dose == 2))
+```
